@@ -1,0 +1,22 @@
+
+- name: Installation  squid
+  hosts: squid
+  remote_user: osboxes
+  become: yes
+  become_method: su
+  tasks:
+  - name: Installation de squid
+    yum: name=squid state=latest
+
+  - name: Include OS-specific variables
+    include_vars: "{{ ansible_os_family }}.yml"
+  - name: squid var
+    include_vars : default/main.yml 
+
+  - name: configure
+    template: 
+      src: squid.conf.j2 
+      dest: /etc/squid/squid.conf2 
+      owner: root 
+      group: root 
+      mode: 0644 
